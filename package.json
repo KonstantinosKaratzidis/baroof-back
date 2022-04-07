@@ -1,0 +1,28 @@
+{
+  "name": "baroof-end",
+  "version": "1.0.0",
+  "description": "Backend for baroof",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "nodemon"
+  },
+  "keywords": [
+    "express",
+    "jsonwebtoken",
+    "mongodb"
+  ],
+  "author": "Konstantinos Karatzidis",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.10"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
