@@ -2,6 +2,7 @@ const express = require("express");
 const User = require("../../models/User.js");
 const bcrypt = require("bcrypt");
 const {body, validationResult} = require("express-validator");
+const {afterValidation} = require('./utils.js');
 
 router = express.Router();
 module.exports = router;
@@ -14,21 +15,7 @@ router.post("/",
 		minLength: 6, minLowercase: 0, minUppercase: 0,
 		minNumbers: 0, minSymbols: 0
 	}),
-	(req, res, next) => {
-		const result = validationResult(req);
-		try {
-			result.throw();
-			console.log("validation OK");
-			next();
-		} catch(err) {
-			const errors = result.array().map(({param, msg}) => ({param, msg}))
-			res.json({
-				success: false,
-				msg: "Validation failed",
-				errors
-			})
-		}
-	}
+	afterValidation
 )
 
 router.post("/", async (req, res) => {
