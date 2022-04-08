@@ -38,7 +38,11 @@ router.post("/",
 router.get("/", (req, res) => {
 	const {token} = req.cookies;
 	if(!token || !checkToken(token)){
-		return res.json({success: true, data: {isLoggedIn: false}});
+		return res.json({success: true, data: {
+			isLoggedIn: false,
+			email: token.email,
+			nickname: token.nickname
+		}});
 	}
 	res.json({success: true, data: {isLoggedIn: true}});
 })
