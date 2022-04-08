@@ -1,9 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const signupRouter = require("./signup.js");
-const loginRouter = require("./login.js");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+
+const signupRouter = require("./signup.js");
+const loginRouter = require("./login.js");
+const logoutRouter = require("./logout.js");
 
 const router = express.Router();
 module.exports = router;
@@ -19,3 +21,4 @@ router.use(cors({
 
 router.use("/signup", signupRouter);
 router.use("/login", loginRouter);
+router.use("/logout", logoutRouter)
