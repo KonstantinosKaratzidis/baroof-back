@@ -1,25 +1,21 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const signupRouter = require("./signup.js");
+const loginRouter = require("./login.js");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
 const router = express.Router();
 module.exports = router;
 
 router.use(bodyParser.json());
+router.use(cookieParser());
 
 // TODO: change for development and production
 router.use(cors({
-	origin: "http://localhost:3000"
+	origin: "http://localhost:3000",
+	credentials: true
 }))
 
-
-router.get("/login", (req, res) => {
-	res.status(200).end("Check if logged in");
-})
-
-router.post("/login", (req, res) => {
-	res.status(200).end("Login");
-})
-
 router.use("/signup", signupRouter);
+router.use("/login", loginRouter);

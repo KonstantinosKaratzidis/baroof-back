@@ -22,4 +22,12 @@ const userSchema = new Schema({
 	}
 });
 
+userSchema.methods.checkPassword = function(password) {
+	return bcrypt.compareSync(password, this.password);
+}
+
+userSchema.static("findByEmail", async function(email){
+	return await this.find({email});
+})
+
 module.exports = mongoose.model("User", userSchema, "users");
