@@ -9,8 +9,11 @@ router.use(authorizedRoute);
 
 router.get("/", async (req, res) => {
 	const {email} = req.token;
-	const baroof = await Baroof.find(
+	const data = await Baroof.find(
 		{owner: email}, {questions: 0, __v: 0, owner: 0}
 	)
-	res.json(baroof)
+	res.json({
+		success: true,
+		data
+	})
 })
