@@ -36,7 +36,7 @@ const baroofSchema = new mongoose.Schema({
 		type: String,
 		default: "Untitled",
 		trim: true,
-		maxLength: 76,
+		maxLength: 95,
 	},
 	owner: {
 		type: String,
