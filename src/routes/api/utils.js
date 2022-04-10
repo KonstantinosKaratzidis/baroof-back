@@ -1,7 +1,7 @@
 const {validationResult} = require("express-validator");
 const jwt = require("jsonwebtoken");
 
-module.exports.afterValidation = (req, res, next) => {
+function afterValidation(req, res, next) {
 	const result = validationResult(req);
 	try {
 		result.throw();
@@ -19,7 +19,7 @@ module.exports.afterValidation = (req, res, next) => {
 // TODO: move elsewhere
 const SECRET = "secret_baroof";
 
-module.exports.setToken = (res, {email, nickname}) => {
+function setToken(res, {email, nickname}) {
 	const token = jwt.sign({email, nickname}, SECRET, {
 		expiresIn: "7d",
 		algorithm: "HS256"
@@ -31,10 +31,25 @@ module.exports.setToken = (res, {email, nickname}) => {
 	});
 }
 
-module.exports.checkToken = (token) => {
+function checkToken(token) {
 	return jwt.verify(token, SECRET);
 }
 
-module.exports.decodeToken = (token) => {
+function decodeToken(token) {
 	return jwt.decode(token);
 }
+
+function authorizedRoute(req, res, next) {
+	if(!req.cookies.token || !checkToken(req.cookies.token))
+		return res.json({success: false, msg: "Unauthorized"});
+	req.token = decodeToken(req.cookies.token)
+	next();
+}
+
+module.exports = {
+	afterValidation,
+	setToken,
+	checkToken,
+	decodeToken,
+	authorizedRoute
+};
