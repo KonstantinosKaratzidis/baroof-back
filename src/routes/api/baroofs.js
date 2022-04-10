@@ -1,5 +1,16 @@
 const express = require("express");
 const Baroof = require("../../models/Baroof");
+const {authorizedRoute} = require("./utils.js");
 
-const route = express.Router();
-module.exports = route;
+const router = express.Router();
+module.exports = router;
+
+router.use(authorizedRoute);
+
+router.get("/", async (req, res) => {
+	const {email} = req.token;
+	const baroof = await Baroof.find(
+		{owner: email}, {questions: 0, __v: 0, owner: 0}
+	)
+	res.json(baroof)
+})
