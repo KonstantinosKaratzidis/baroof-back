@@ -17,3 +17,14 @@ router.get("/", async (req, res) => {
 		data
 	})
 })
+
+router.delete("/:_id", async (req, res) => {
+	const {_id} = req.params;
+	console.log("delete", _id);
+	try {
+		await Baroof.deleteOne({_id})
+		res.json({success: true});
+	} catch (err){
+		res.json({success: false});
+	}
+})
