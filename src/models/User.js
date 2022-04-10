@@ -30,4 +30,9 @@ userSchema.static("findByEmail", async function(email){
 	return await this.find({email});
 })
 
+userSchema.static("userExists", async function(email) {
+	const user = await this.exists({email})
+	return Boolean(user)
+})
+
 module.exports = mongoose.model("User", userSchema, "users");
