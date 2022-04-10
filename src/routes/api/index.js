@@ -6,6 +6,7 @@ const cors = require("cors");
 const signupRouter = require("./signup.js");
 const loginRouter = require("./login.js");
 const logoutRouter = require("./logout.js");
+const baroofsRouter = require("./baroofs.js");
 
 const router = express.Router();
 module.exports = router;
@@ -22,3 +23,4 @@ router.use(cors({
 router.use("/signup", signupRouter);
 router.use("/login", loginRouter);
 router.use("/logout", logoutRouter)
+router.use("/baroofs", baroofsRouter);
