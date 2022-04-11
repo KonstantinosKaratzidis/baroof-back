@@ -29,3 +29,44 @@ router.delete("/:_id", async (req, res) => {
 		res.json({success: false});
 	}
 })
+
+const allowedValues = new Set(Object.keys(Baroof.schema.paths));
+console.log(allowedValues)
+
+router.put("/:_id",
+	(req, res, next) => {
+		delete req.body.createdAt;
+		delete req.body.updatedAt;
+		delete req.body.owner;
+		delete req.body._id;
+		delete req.body.__v;
+		next();
+	},
+	(req, res, next) => {
+		for(const key of Object.keys(req.body)){
+			if(!allowedValues.has(key))
+				return res.json({
+					success: false,
+					msg: `Invalid field "${key}"`
+				})
+		}
+		next();
+	},
+	async (req, res) => {
+		console.log("update");
+		const {_id} = req.params;
+		const baroof = await Baroof.findOne({_id})
+		if(!baroof)
+			return res.json({
+				success: false,
+				msg: "Not found"
+			})
+		for(const key of Object.keys(req.body))
+			baroof[key] = req.body[key];
+		await baroof.save();
+		console.log("was ok")
+		res.json({
+			success: true
+		})
+	}
+)
