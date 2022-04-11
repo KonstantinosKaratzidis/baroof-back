@@ -20,9 +20,10 @@ router.get("/", async (req, res) => {
 
 router.delete("/:_id", async (req, res) => {
 	const {_id} = req.params;
+	const {email} = req.token;
 	console.log("delete", _id);
 	try {
-		await Baroof.deleteOne({_id})
+		await Baroof.deleteOne({_id, owner: email});
 		res.json({success: true});
 	} catch (err){
 		res.json({success: false});
