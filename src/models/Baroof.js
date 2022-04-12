@@ -9,6 +9,12 @@ const optionSchema = new mongoose.Schema({
 	isCorrect: {
 		type: Boolean,
 		required: true
+	},
+	index: {
+		type: Number,
+		min: 0,
+		max: 4,
+		required: true
 	}
 })
 
