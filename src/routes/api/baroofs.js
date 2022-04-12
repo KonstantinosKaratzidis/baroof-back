@@ -21,7 +21,6 @@ router.get("/", async (req, res) => {
 router.delete("/:_id", async (req, res) => {
 	const {_id} = req.params;
 	const {email} = req.token;
-	console.log("delete", _id);
 	try {
 		await Baroof.deleteOne({_id, owner: email});
 		res.json({success: true});
@@ -31,7 +30,6 @@ router.delete("/:_id", async (req, res) => {
 })
 
 const allowedValues = new Set(Object.keys(Baroof.schema.paths));
-console.log(allowedValues)
 
 router.put("/:_id",
 	(req, res, next) => {
@@ -53,7 +51,6 @@ router.put("/:_id",
 		next();
 	},
 	async (req, res) => {
-		console.log("update");
 		const {_id} = req.params;
 		const baroof = await Baroof.findOne({_id})
 		if(!baroof)
@@ -64,7 +61,6 @@ router.put("/:_id",
 		for(const key of Object.keys(req.body))
 			baroof[key] = req.body[key];
 		await baroof.save();
-		console.log("was ok")
 		res.json({
 			success: true
 		})
