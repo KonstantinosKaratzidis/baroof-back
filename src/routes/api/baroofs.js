@@ -68,9 +68,16 @@ function removeInvalid(req, res, next){
 router.post("/",
 	deleteFields,
 	removeInvalid,
-	(req, res) => {
-		console.log("create");
-		res.json({success: false});
+	async (req, res) => {
+		const owner = req.token.email;
+		const baroof = new Baroof({owner, ...req.body})
+		try {
+			await baroof.save()
+			return res.json({success: true});
+		} catch (err) {
+			console.log(err.errors)
+			return res.json({success: false});
+		}
 	}
 )
 
