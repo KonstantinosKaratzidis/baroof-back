@@ -13,7 +13,7 @@ const optionSchema = new mongoose.Schema({
 	index: {
 		type: Number,
 		min: 0,
-		max: 4,
+		max: 3,
 		required: true
 	}
 })
@@ -30,9 +30,18 @@ const questionSchema = new mongoose.Schema({
 		validate: {
 			validator: (v) => {
 				const length = v.length;
-				return length >= 1 && length <= 4;
+				if(!(length >= 2 && length <= 4))
+					return false;
+				const indexes = new Set();
+				for(const option of v){
+					if(indexes.has(option.index))
+						return false;
+					indexes.add(option.index);
+				}
+
+				return true;
 			},
-			message: "Only one to four options"
+			message: "Only one to four options with correct indexes"
 		}
 	}
 })
