@@ -4,7 +4,9 @@ const User = require("./User");
 const optionSchema = new mongoose.Schema({
 	text: {
 		type: String,
-		maxLength: 75
+		maxLength: 75,
+		minLength: 75,
+		trim: true
 	},
 	isCorrect: {
 		type: Boolean,
