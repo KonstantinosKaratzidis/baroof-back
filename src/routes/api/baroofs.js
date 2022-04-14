@@ -65,17 +65,27 @@ function removeInvalid(req, res, next){
 	next();
 }
 
+function sanitizeOptions(req, res, next){
+	const data = req.body;
+	for(let i = 0; i < data.questions.length; i++){
+		const question = data.questions[i];
+		question.options = 
+			question.options.filter(option => option.text.trim().length > 0)
+	}
+	next();
+}
+
 router.post("/",
 	deleteFields,
 	removeInvalid,
+	sanitizeOptions,
 	async (req, res) => {
 		const owner = req.token.email;
 		const baroof = new Baroof({owner, ...req.body})
 		try {
 			await baroof.save()
-			return res.json({success: true});
+			return res.json({success: true, data: {_id: baroof._id}});
 		} catch (err) {
-			console.log(err.errors)
 			return res.json({success: false});
 		}
 	}
@@ -84,6 +94,7 @@ router.post("/",
 router.put("/:_id",
 	deleteFields,
 	removeInvalid,
+	sanitizeOptions,
 	async (req, res) => {
 		const {_id} = req.params;
 		const baroof = await Baroof.findOne({_id})

@@ -5,7 +5,7 @@ const optionSchema = new mongoose.Schema({
 	text: {
 		type: String,
 		maxLength: 75,
-		minLength: 75,
+		minLength: 1,
 		trim: true
 	},
 	isCorrect: {
