@@ -45,25 +45,38 @@ router.delete("/:_id", async (req, res) => {
 
 const allowedValues = new Set(Object.keys(Baroof.schema.paths));
 
+function deleteFields(req, res, next){
+	delete req.body.createdAt;
+	delete req.body.updatedAt;
+	delete req.body.owner;
+	delete req.body._id;
+	delete req.body.__v;
+	next();
+}
+
+function removeInvalid(req, res, next){
+	for(const key of Object.keys(req.body)){
+		if(!allowedValues.has(key))
+			return res.json({
+				success: false,
+				msg: `Invalid field "${key}"`
+			})
+	}
+	next();
+}
+
+router.post("/",
+	deleteFields,
+	removeInvalid,
+	(req, res) => {
+		console.log("create");
+		res.json({success: false});
+	}
+)
+
 router.put("/:_id",
-	(req, res, next) => {
-		delete req.body.createdAt;
-		delete req.body.updatedAt;
-		delete req.body.owner;
-		delete req.body._id;
-		delete req.body.__v;
-		next();
-	},
-	(req, res, next) => {
-		for(const key of Object.keys(req.body)){
-			if(!allowedValues.has(key))
-				return res.json({
-					success: false,
-					msg: `Invalid field "${key}"`
-				})
-		}
-		next();
-	},
+	deleteFields,
+	removeInvalid,
 	async (req, res) => {
 		const {_id} = req.params;
 		const baroof = await Baroof.findOne({_id})
