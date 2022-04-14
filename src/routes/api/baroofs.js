@@ -18,6 +18,20 @@ router.get("/", async (req, res) => {
 	})
 })
 
+router.get("/:_id", async (req, res) => {
+	const {email} = req.token;
+	const {_id} = req.params;
+	const data = await Baroof.findOne(
+		{owner: email, _id}, {__v: 0, owner: 0}
+	)
+	if(!data)
+		return res.json({success: false})
+	res.json({
+		success: true,
+		data
+	})
+})
+
 router.delete("/:_id", async (req, res) => {
 	const {_id} = req.params;
 	const {email} = req.token;
@@ -60,9 +74,16 @@ router.put("/:_id",
 			})
 		for(const key of Object.keys(req.body))
 			baroof[key] = req.body[key];
-		await baroof.save();
+		try {
+			await baroof.save();
+		} catch (err) {
+			return res.json({
+				success: false
+			})
+		}
 		res.json({
-			success: true
+			success: true,
+			data: await Baroof.findOne({_id})
 		})
 	}
 )
