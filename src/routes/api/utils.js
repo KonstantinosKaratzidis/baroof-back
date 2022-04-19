@@ -32,7 +32,11 @@ function setToken(res, {email, nickname}) {
 }
 
 function checkToken(token) {
-	return jwt.verify(token, SECRET);
+	try {
+		return jwt.verify(token, SECRET);
+	} catch(err) {
+		return false;
+	}
 }
 
 function decodeToken(token) {
