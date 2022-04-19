@@ -1,6 +1,8 @@
+const http = require("http");
 const express = require("express");
 const mongoose = require("mongoose");
 const appRouter = require("./routes/");
+const {initHosting} = require("./hosting");
 const PORT = 4000;
 
 async function dbConnect() {
@@ -16,10 +18,16 @@ async function dbConnect() {
 const app = express();
 app.use(appRouter);
 
+const server = http.createServer(app);
+
 ;(async function () {
 	await dbConnect();
 	console.log("connected to database");
-	app.listen(PORT, () => {
+
+	initHosting(server);
+	console.log("initialized web socket server");
+
+	server.listen(PORT, () => {
 		console.log(`server listening on port ${PORT}`);
 	});
 })();
